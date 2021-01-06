@@ -5,8 +5,7 @@ A pretty map for tracking progress towards walking all streets in your town, plu
 ![color_map](screenshots/color_map.png)
 
 ## Why:
-My wife and I wanted to walk all the streets in our town during the COVID-19 pandemic, so we needed a way to map all the streets we'd already walked. I started this project upon discovering that the [CityStrides](https://citystrides.com/) Lifemap would take weeks to generate (thanks to [Strava not responding](https://community.citystrides.com/t/welcome-to-the-community-roadmap-updated-2020-04-23) to CityStrides' requests to increase their API limits).
-Blog post to come
+My wife and I wanted to walk all the streets in our town during the COVID-19 pandemic, so we needed a way to map all the streets we'd already walked. After discovering that the [CityStrides](https://citystrides.com/) LifeMap could take weeks to generate (thanks to [Strava not responding](https://community.citystrides.com/t/welcome-to-the-community-roadmap-updated-2020-04-23) to CityStrides' requests to increase their API limits), I built my own map, greatly assisted by this [Mark Needham blog post](https://markhneedham.com/blog/2017/04/29/leaflet-strava-polylines-osm/). My experiences building the map and using it will be detailed in my own blog posts.
 
 ## How it works:
 - I track walks in the [Strava](https://www.strava.com/) app
