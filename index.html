@@ -18,11 +18,20 @@
 		<style>
 		  body { margin:0; padding:0; }
 		  #map { position:absolute; top:0; bottom:0; width:100%; }
+		  #btn-wrapper { position: absolute; left: 45px; top: 20px }
+		  button { position: relative; z-index: 9999; left: 20px; font-size: 15px }
 		</style>
 	</head>
 <body>
 
-	<div id='map'></div>
+	<div id='map-wrapper'>
+		<div id='btn-wrapper'>
+			<button onclick="renderWalk(); event.stopPropagation()"; >Render next</button>
+			<button onclick="renderAllWalks(); event.stopPropagation()"; >Render all</button>
+			<button onclick="renderAllWalks(true); event.stopPropagation()"; >Render one at a time</button>
+		</div>
+		<div id='map'></div>
+	</div>
 
 	<script>
 
@@ -80,38 +89,43 @@
 	}
 
 	var boundaryLine = L.polyline(
-	      simplifiedboundaryCoordinates,
-	      {
-	          color: '#676767',
-	          weight: 6,
-	          opacity: .9,
-	          lineJoin: 'round'
-	      }
-	  ).addTo(map);
-	
+		simplifiedboundaryCoordinates,
+		{
+			color: '#676767',
+			weight: 6,
+			opacity: .9,
+			lineJoin: 'round'
+		}
+	).addTo(map);
+
 	// The "walks" variable is read in from static/walks.js
 	var encodedRoutes = walks
 	encodedRoutes.reverse()
 
 	var colors = [
-	    "#ee5464","#f8ac59","#23c6c8","#1ab394","#1c84c6","#6497b1","#005b96","#03396c",
-	    "#011f4b","#004c4c","#006666","#008080","#ff7f50","#ffaa40","#516ca7","#ddae36",
-	    "#b61aae","#590d82","#3c3c76","#a9245b","#417c69","#f23d3e"
-	  ]
+		"#ee5464","#f8ac59","#23c6c8","#1ab394","#1c84c6","#6497b1","#005b96","#03396c",
+		"#011f4b","#004c4c","#006666","#008080","#ff7f50","#ffaa40","#516ca7","#ddae36",
+		"#b61aae","#590d82","#3c3c76","#a9245b","#417c69","#f23d3e"
+	]
 
 	var usedColors = []
+	walkIndex = 0
 
-	for (let encoded of encodedRoutes) {
-		if (typeof randomColors !== 'undefined' && randomColors == true) {
-			runColor = colors[Math.trunc(Math.random()*colors.length)]
-			while (usedColors.indexOf(runColor) > -1) {
-				runColor = colors[Math.trunc(Math.random()*colors.length)]
-			}
-			usedColors.push(runColor)
-			if (usedColors.length == colors.length) {
-				usedColors = []
-			}
+	function renderWalk() {
+		if (walkIndex < 0 || walkIndex > (encodedRoutes.length -1)) {
+			return
 		}
+		encoded = encodedRoutes[walkIndex]
+		if (typeof randomColors !== 'undefined' && randomColors == true) {
+				runColor = colors[Math.trunc(Math.random()*colors.length)]
+				while (usedColors.indexOf(runColor) > -1) {
+					runColor = colors[Math.trunc(Math.random()*colors.length)]
+				}
+				usedColors.push(runColor)
+				if (usedColors.length == colors.length) {
+					usedColors = []
+				}
+			}
 
 		var coordinates = L.Polyline.fromEncoded(encoded).getLatLngs();
 		var simplifiedCoordinates = simplifyPolylineLatLngCoords(coordinates, 5)
@@ -126,6 +140,16 @@
 				smoothFactor: 2
 			}
 		).addTo(map);
+		walkIndex += 1
+	}
+
+	async function renderAllWalks(oneAtATime = false) {
+		for (let encoded of encodedRoutes) {
+			renderWalk()
+			if (oneAtATime) {
+				await sleep(1500)
+			}
+		}
 	}
 
 	var currentRoute = [];
