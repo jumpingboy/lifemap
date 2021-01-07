@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import os
 
 app = Flask(__name__, template_folder='.')
 
@@ -7,4 +8,5 @@ def render():
   return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(port = 5001)
+  os.environ["FLASK_ENV"] = 'development'
+  app.run(port = 5001)
