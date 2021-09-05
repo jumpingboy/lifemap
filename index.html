@@ -63,7 +63,10 @@
 
 	var boundaryPolyline = 'sgu~F|vtrL~Di@dDtArFzDpGi@xCaNpDr@nBd@dGGdF?f`@lcGnV_D^}Cx~AkXpBu_@zNyLGib@ZuPaBgHy@og@vAcIcC}iALi[}Yw{FgCs@eBNwHxBun@bQiFl@qa@zQgL@sK]ki@sD_RiAuFi@yBT{Cs@gRiArAv^jBtV|@bFO`B`@lEItEdBfV?tBnAvOj@pFbB~]c@bChErc@ZzOtF|p@'
 
+	var tempSomvBoundaryPolyline = 'gw{aGv}bqLQZ^jCHzBd@xBb@`AInAl@vClAdBtA|AbCUdPlDx]hAph@|N|Nuk@{Kux@y[mG]p@@bGoEjPaCi@qDzNeDiCuDrM~CjBwHrJgHeEsEzP}TyPiEw@'
+
 	var boundaryCoordinates = L.Polyline.fromEncoded(boundaryPolyline).getLatLngs()
+	var tempSomvBoundCoords = L.Polyline.fromEncoded(tempSomvBoundaryPolyline).getLatLngs()
 	var simplifiedboundaryCoordinates = simplifyPolylineLatLngCoords(boundaryCoordinates,5)
 
 	function simplifyPolylineLatLngCoords(polylineCoords, howsimple){
@@ -80,15 +83,27 @@
 	}
 
 	var boundaryLine = L.polyline(
-	      simplifiedboundaryCoordinates,
-	      {
-	          color: '#676767',
-	          weight: 6,
-	          opacity: .9,
-	          lineJoin: 'round'
-	      }
-	  ).addTo(map);
-	
+		simplifiedboundaryCoordinates,
+		{
+			color: '#676767',
+			weight: 6,
+			opacity: .9,
+			lineJoin: 'round'
+		}
+	).addTo(map);
+
+	var tempSomvBoundaryLine = L.polyline(
+		tempSomvBoundCoords,
+		{
+			color: '#676767',
+			weight: 6,
+			opacity: .9,
+			lineJoin: 'round'
+		}
+	).addTo(map);
+
+
+
 	// The "walks" variable is read in from static/walks.js
 	var encodedRoutes = walks
 	encodedRoutes.reverse()
